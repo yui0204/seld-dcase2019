@@ -8,7 +8,7 @@ def get_params(argv):
     print("SET: {}".format(argv))
     # ########### default parameters ##############
     params = dict(
-        quick_test=True,     # To do quick test. Trains/test on small subset of dataset, and # of epochs
+        quick_test=False,     # To do quick test. Trains/test on small subset of dataset, and # of epochs
 
         # INPUT PATH
         #dataset_dir='/media/yui-sudo/Samsung_T5/dcase2019_task3/proj/asignal/DCASE2019/dataset/',  # Base folder containing the foa/mic and metadata folders
