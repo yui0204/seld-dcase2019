@@ -2,12 +2,16 @@
 # NOTE: Change the dataset_dir and feat_label_dir path accordingly
 
 import cls_feature_class
+import os
 
 process_str = 'dev, eval'  # 'dev' or 'eval' will extract features for the respective set accordingly
 #  'dev, eval' will extract features of both sets together
 
 dataset_name = 'foa'  # 'foa' -ambisonic or 'mic' - microphone signals
-root_dir = "/media/yui-sudo/Samsung_T5/dcase2019_task3"
+if os.getcwd() == '/home/yui-sudo/document/segmentation/sound_segtest':
+    root_dir = "/media/yui-sudo/Samsung_T5/dcase2019_task3"
+else:
+    root_dir = "/misc/export2/sudou/dcase2019_task3"
 dataset_dir = root_dir + '/proj/asignal/DCASE2019/dataset/'   # Base folder containing the foa/mic and metadata folders
 feat_label_dir = root_dir + '/proj/asignal/DCASE2019/dataset/feat_label_tmp/'  # Directory to dump extracted features and labels
 
