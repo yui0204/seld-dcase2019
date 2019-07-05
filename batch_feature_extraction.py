@@ -7,8 +7,8 @@ import os
 process_str = 'dev, eval'  # 'dev' or 'eval' will extract features for the respective set accordingly
 #  'dev, eval' will extract features of both sets together
 
-dataset_name = 'foa'  # 'foa' -ambisonic or 'mic' - microphone signals
-if os.getcwd() == '/home/yui-sudo/document/segmentation/sound_segtest':
+dataset_name = 'mic'  # 'foa' -ambisonic or 'mic' - microphone signals
+if os.getcwd() == '/home/yui-sudo/document/segmentation/seld-dcase2019':
     root_dir = "/media/yui-sudo/Samsung_T5/dcase2019_task3"
 else:
     root_dir = "/misc/export2/sudou/dcase2019_task3"

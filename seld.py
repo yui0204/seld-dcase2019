@@ -16,6 +16,16 @@ import time
 
 plot.switch_backend('agg')
 
+import tensorflow as tf
+#from keras.utils import multi_gpu_model
+
+import keras.backend as K
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+config.gpu_options.visible_device_list = "0"#,1,2"
+sess = tf.Session(config=config)
+K.set_session(sess)
+
 
 def collect_test_labels(_data_gen_test, _data_out, quick_test):
     # Collecting ground truth for test data
