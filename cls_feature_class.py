@@ -12,6 +12,8 @@ import matplotlib.pyplot as plot
 import librosa
 plot.switch_backend('agg')
 
+import matplotlib.pyplot as plt
+
 
 class FeatureClass:
     def __init__(self, dataset_dir='', feat_label_dir='', dataset='foa', is_eval=False):
@@ -109,18 +111,35 @@ class FeatureClass:
     def _spectrogram(self, audio_input):
         _nb_ch = audio_input.shape[1]
         nb_bins = self._nfft // 2
-        spectra = np.zeros((self._max_frames, nb_bins, _nb_ch), dtype=complex)
+        
+        #spectra = np.zeros((self._max_frames, nb_bins, _nb_ch), dtype=complex)
+        spectra = np.zeros((self._max_frames, nb_bins, (_nb_ch - 1) * 2 + 1), dtype=complex)
+        spectra_raw = np.zeros((self._max_frames, nb_bins, (_nb_ch - 1) * 2 + 1), dtype=complex)
+        
         for ch_cnt in range(_nb_ch):
             stft_ch = librosa.core.stft(audio_input[:, ch_cnt], n_fft=self._nfft, hop_length=self._hop_len,
                                         win_length=self._win_len, window='hann')
-            spectra[:, :, ch_cnt] = stft_ch[1:, :self._max_frames].T
+            spectra_raw[:, :, ch_cnt] = stft_ch[1:, :self._max_frames].T
+#            spectra[:, :, ch_cnt] = spectra_raw[:, :, ch_cnt]
+            
+            if ch_cnt == 0:
+                spectra[:, :, ch_cnt] = np.abs(spectra_raw[:, :, ch_cnt])
+            else:
+                spectra[:, :, ch_cnt*2-1] = np.cos(np.angle(spectra_raw[:, :, 0]) - np.angle(spectra_raw[:, :, ch_cnt]))
+                spectra[:, :, ch_cnt * 2] = np.sin(np.angle(spectra_raw[:, :, 0]) - np.angle(spectra_raw[:, :, ch_cnt]))
+        
         return spectra
 
     def _extract_spectrogram_for_file(self, audio_filename):
         audio_in, fs = self._load_audio(os.path.join(self._aud_dir, audio_filename))
         audio_spec = self._spectrogram(audio_in)
         # print('\t{}'.format(audio_spec.shape))
-        np.save(os.path.join(self._feat_dir, '{}.npy'.format(audio_filename.split('.')[0])), audio_spec.reshape(self._max_frames, -1))
+
+        # reshape to 2D
+#        np.save(os.path.join(self._feat_dir, '{}.npy'.format(audio_filename.split('.')[0])), audio_spec.reshape(self._max_frames, -1))
+        np.save(os.path.join(self._feat_dir, '{}.npy'.format(audio_filename.split('.')[0])), audio_spec)
+
+
 
     # OUTPUT LABELS
     def read_desc_file(self, desc_filename, in_sec=False):
@@ -255,9 +274,10 @@ class FeatureClass:
 
             spec_scaler = preprocessing.StandardScaler()
             for file_cnt, file_name in enumerate(os.listdir(self._feat_dir)):
-                print('{}: {}'.format(file_cnt, file_name))
                 feat_file = np.load(os.path.join(self._feat_dir, file_name))
-                spec_scaler.partial_fit(np.concatenate((np.abs(feat_file), np.angle(feat_file)), axis=1))
+#                spec_scaler.partial_fit(np.concatenate((np.abs(feat_file), np.angle(feat_file)), axis=1))
+                spec_scaler.partial_fit(feat_file[:, :, 0])
+                print('{}: {} {}'.format(file_cnt, file_name, spec_scaler))
                 del feat_file
             joblib.dump(
                 spec_scaler,
@@ -268,13 +288,11 @@ class FeatureClass:
         print('Normalizing feature files:')
         print('\t\tfeat_dir_norm {}'.format(self._feat_dir_norm))
         for file_cnt, file_name in enumerate(os.listdir(self._feat_dir)):
-            print('{}: {}'.format(file_cnt, file_name))
             feat_file = np.load(os.path.join(self._feat_dir, file_name))
-            feat_file = spec_scaler.transform(np.concatenate((np.abs(feat_file), np.angle(feat_file)), axis=1))
-            np.save(
-                os.path.join(self._feat_dir_norm, file_name),
-                feat_file
-            )
+#            feat_file = spec_scaler.transform(np.concatenate((np.abs(feat_file), np.angle(feat_file)), axis=1))
+            feat_file.transpose(2,0,1)[0] = spec_scaler.transform(feat_file.transpose(2,0,1)[0])
+            print('{}: {}'.format(file_cnt, file_name))
+            np.save(os.path.join(self._feat_dir_norm, file_name), feat_file)
             del feat_file
 
         print('normalized files written to {}'.format(self._feat_dir_norm))
@@ -294,6 +312,20 @@ class FeatureClass:
             desc_file = self.read_desc_file(os.path.join(self._desc_dir, file_name))
             label_mat = self.get_labels_for_file(desc_file)
             np.save(os.path.join(self._label_dir, '{}.npy'.format(wav_filename.split('.')[0])), label_mat)
+
+            """
+            label_mat_new = np.zeros((self._max_frames, 55), dtype=np.float32)
+            label_mat_new[:, :11] = label_mat[:, :11]
+            label_mat_new[:, 11:22] = np.sin(label_mat[:, 11:22] * 6.28 / 360)
+            label_mat_new[:, 22:33] = np.cos(label_mat[:, 11:22] * 6.28 / 360)
+#            label_mat_new[:, 33:] = label_mat[:, 22:]
+            label_mat_new[:, 33:44] = np.sin(label_mat[:, 22:] * 6.28 / 360)
+            label_mat_new[:, 44:] = np.cos(label_mat[:, 22:] * 6.28 / 360)
+            
+            np.save(os.path.join(self._label_dir, '{}.npy'.format(wav_filename.split('.')[0])), label_mat_new)
+            """
+            
+
 
     # ------------------------------- Misc public functions -------------------------------
     def get_classes(self):

@@ -202,7 +202,21 @@ def main(argv):
                 steps=2 if params['quick_test'] else data_gen_val.get_total_batches_in_data(),
                 verbose=2
             )
-
+            
+            """
+            for i in range(len(pred)):
+                if pred[i][0] > 0 and pred[i][1] > 0:
+                    pred[i][0] = np.arctan(pred[i][0] / pred[i][1])
+                elif pred[i][0] > 0 and pred[i][1] < 0:
+                    pred[i][0] = np.arctan(pred[i][0] / pred[i][1]) + 3.141592
+                elif pred[i][0] < 0 and pred[i][1] > 0:
+                    pred[i][0] = np.arctan(pred[i][0] / pred[i][1]) - 3.141592
+                elif pred[i][0] < 0 and pred[i][1] < 0:
+                    pred[i][0] = np.arctan(pred[i][0] / pred[i][1])
+                    
+            pred.T[0] = pred.T[0] / 6.28 * 360
+            """
+            
             # Calculate the metrics
             sed_pred = evaluation_metrics.reshape_3Dto2D(pred[0]) > 0.5
             doa_pred = evaluation_metrics.reshape_3Dto2D(pred[1])
@@ -265,7 +279,19 @@ def main(argv):
             steps=2 if params['quick_test'] else data_gen_test.get_total_batches_in_data(),
             verbose=2
         )
-
+        """
+        for i in range(len(pred_test)):
+            if pred_test[i][0] > 0 and pred_test[i][1] > 0:
+                pred_test[i][0] = np.arctan(pred_test[i][0] / pred_test[i][1])
+            elif pred_test[i][0] > 0 and pred_test[i][1] < 0:
+                pred_test[i][0] = np.arctan(pred_test[i][0] / pred_test[i][1]) + 3.141592
+            elif pred_test[i][0] < 0 and pred_test[i][1] > 0:
+                pred_test[i][0] = np.arctan(pred_test[i][0] / pred_test[i][1]) - 3.141592
+            elif pred_test[i][0] < 0 and pred_test[i][1] < 0:
+                pred_test[i][0] = np.arctan(pred_test[i][0] / pred_test[i][1])
+                
+        pred_test.T[0] = pred_test.T[0] / 6.28 * 360
+        """
         test_sed_pred = evaluation_metrics.reshape_3Dto2D(pred_test[0]) > 0.5
         test_doa_pred = evaluation_metrics.reshape_3Dto2D(pred_test[1])
 
