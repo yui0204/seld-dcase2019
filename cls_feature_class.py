@@ -113,7 +113,7 @@ class FeatureClass:
         nb_bins = self._nfft // 2
         
         #spectra = np.zeros((self._max_frames, nb_bins, _nb_ch), dtype=complex)
-        spectra = np.zeros((self._max_frames, nb_bins, (_nb_ch - 1) * 2 + 1), dtype=complex)
+        spectra = np.zeros((self._max_frames, nb_bins, (_nb_ch - 1) * 2 + 1), dtype=np.float32)
         spectra_raw = np.zeros((self._max_frames, nb_bins, (_nb_ch - 1) * 2 + 1), dtype=complex)
         
         for ch_cnt in range(_nb_ch):
