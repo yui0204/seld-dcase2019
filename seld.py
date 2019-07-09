@@ -22,7 +22,7 @@ import tensorflow as tf
 import keras.backend as K
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
-config.gpu_options.visible_device_list = "0"#,1,2"
+config.gpu_options.visible_device_list = "0,1,2"
 sess = tf.Session(config=config)
 K.set_session(sess)
 
@@ -166,10 +166,11 @@ def main(argv):
             params['dropout_rate'], params['nb_cnn2d_filt'], params['pool_size'], params['rnn_size'],
             params['fnn_size']))
 
-        model = keras_model.get_model(data_in=data_in, data_out=data_out, dropout_rate=params['dropout_rate'],
-                                      nb_cnn2d_filt=params['nb_cnn2d_filt'], pool_size=params['pool_size'],
-                                      rnn_size=params['rnn_size'], fnn_size=params['fnn_size'],
-                                      weights=params['loss_weights'])
+        with tf.device('/cpu:0'): ################################################multi GPU!!!!!!!!!!!!!!!!!!!!!!!!
+            model = keras_model.get_model(data_in=data_in, data_out=data_out, dropout_rate=params['dropout_rate'],
+                                          nb_cnn2d_filt=params['nb_cnn2d_filt'], pool_size=params['pool_size'],
+                                          rnn_size=params['rnn_size'], fnn_size=params['fnn_size'],
+                                          weights=params['loss_weights'])
         best_seld_metric = 99999
         best_epoch = -1
         patience_cnt = 0

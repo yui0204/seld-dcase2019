@@ -11,12 +11,12 @@ def get_params(argv):
         quick_test=False,     # To do quick test. Trains/test on small subset of dataset, and # of epochs
 
         # INPUT PATH
-        dataset_dir='/media/yui-sudo/Samsung_T5/dcase2019_task3/proj/asignal/DCASE2019/dataset/',  # Base folder containing the foa/mic and metadata folders
-        #dataset_dir='/misc/export2/sudou/dcase2019_task3/proj/asignal/DCASE2019/dataset/',  # Base folder containing the foa/mic and metadata folders
+        #dataset_dir='/media/yui-sudo/Samsung_T5/dcase2019_task3/proj/asignal/DCASE2019/dataset/',  # Base folder containing the foa/mic and metadata folders
+        dataset_dir='/misc/export2/sudou/dcase2019_task3/proj/asignal/DCASE2019/dataset/',  # Base folder containing the foa/mic and metadata folders
 
         # OUTPUT PATH
-        feat_label_dir='/media/yui-sudo/Samsung_T5/dcase2019_task3/proj/asignal/DCASE2019/dataset/feat_label/',  # Directory to dump extracted features and labels
-        #feat_label_dir='/misc/export2/sudou/dcase2019_task3/proj/asignal/DCASE2019/dataset/feat_label/',  # Directory to dump extracted features and labels
+        #feat_label_dir='/media/yui-sudo/Samsung_T5/dcase2019_task3/proj/asignal/DCASE2019/dataset/feat_label/',  # Directory to dump extracted features and labels
+        feat_label_dir='/misc/export2/sudou/dcase2019_task3/proj/asignal/DCASE2019/dataset/feat_label/',  # Directory to dump extracted features and labels
         model_dir='models/',   # Dumps the trained models and training curves in this folder
         dcase_output=True,     # If true, dumps the results recording-wise in 'dcase_dir' path.
                                # Set this true after you have finalized your model, save the output, and submit
@@ -28,7 +28,7 @@ def get_params(argv):
 
         # DNN MODEL PARAMETERS
         sequence_length=128,        # Feature sequence length
-        batch_size=4,#16,              # Batch size
+        batch_size=64 * 3              # Batch size                                               multi GPU!!!!!!!!!!!!!
         dropout_rate=0,             # Dropout rate, constant for all layers
         nb_cnn2d_filt=64,           # Number of CNN nodes, constant for each layer
         pool_size=[8, 8, 4],        # CNN pooling, length of list = number of CNN layers, list value = pooling per layer

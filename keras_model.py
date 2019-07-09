@@ -13,6 +13,8 @@ import keras
 keras.backend.set_image_data_format('channels_first')
 from IPython import embed
 
+from keras.utils import multi_gpu_model
+
 
 def get_model(data_in, data_out, dropout_rate, nb_cnn2d_filt, pool_size,
                                 rnn_size, fnn_size, weights):
@@ -56,7 +58,21 @@ def get_model(data_in, data_out, dropout_rate, nb_cnn2d_filt, pool_size,
     sed = Activation('sigmoid', name='sed_out')(sed)
 
     model = Model(inputs=spec_start, outputs=[sed, doa])
+    
+    model = multi_gpu_model(model, gpus = 3) ############## multi GPU!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
     model.compile(optimizer=Adam(), loss=['binary_crossentropy', 'mse'], loss_weights=weights)
 
     model.summary()
     return model
+
+#    if gpu_count > 1:
+#        multi_model = multi_gpu_model(model, gpus=gpu_count)
+#    else:
+#        multi_model = model
+        
+#    return model, multi_model
+#    if gpu_count == 1:
+#        model.compile(optimizer=Adam(), loss=['binary_crossentropy', 'mse'], loss_weights=weights)
+#    else:
+#        multi_model.compile(optimizer=Adam(), loss=['binary_crossentropy', 'mse'], loss_weights=weights)
