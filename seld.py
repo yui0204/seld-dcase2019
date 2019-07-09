@@ -166,8 +166,8 @@ def main(argv):
             params['dropout_rate'], params['nb_cnn2d_filt'], params['pool_size'], params['rnn_size'],
             params['fnn_size']))
 
-        with tf.device('/cpu:0'): ################################################multi GPU!!!!!!!!!!!!!!!!!!!!!!!!
-            model = keras_model.get_model(data_in=data_in, data_out=data_out, dropout_rate=params['dropout_rate'],
+         ################################################multi GPU!!!!!!!!!!!!!!!!!!!!!!!!
+        model = keras_model.get_model(data_in=data_in, data_out=data_out, dropout_rate=params['dropout_rate'],
                                           nb_cnn2d_filt=params['nb_cnn2d_filt'], pool_size=params['pool_size'],
                                           rnn_size=params['rnn_size'], fnn_size=params['fnn_size'],
                                           weights=params['loss_weights'])
