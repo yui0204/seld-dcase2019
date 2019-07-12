@@ -28,7 +28,8 @@ class DataGenerator(object):
         self._filenames_list = list()
         self._nb_frames_file = 0     # Using a fixed number of frames in feat files. Updated in _get_label_filenames_sizes()
         self._feat_len = None
-        self._2_nb_ch = 2 * self._feat_cls.get_nb_channels()
+#        self._2_nb_ch = 2 * self._feat_cls.get_nb_channels()
+        self._2_nb_ch = 7
         self._label_len = None  # total length of label - DOA + SED
         self._doa_len = None    # DOA label length
         self._class_dict = self._feat_cls.get_classes()
