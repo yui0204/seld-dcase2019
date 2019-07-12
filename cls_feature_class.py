@@ -133,7 +133,7 @@ class FeatureClass:
     def _extract_spectrogram_for_file(self, audio_filename):
         audio_in, fs = self._load_audio(os.path.join(self._aud_dir, audio_filename))
         audio_spec = self._spectrogram(audio_in)
-        # print('\t{}'.format(audio_spec.shape))
+        print('\t{}'.format(audio_spec.shape))
 
         # reshape to 2D
 #        np.save(os.path.join(self._feat_dir, '{}.npy'.format(audio_filename.split('.')[0])), audio_spec.reshape(self._max_frames, -1))
