@@ -114,7 +114,7 @@ class FeatureClass:
         
         #spectra = np.zeros((self._max_frames, nb_bins, _nb_ch), dtype=complex)
         spectra = np.zeros((self._max_frames, nb_bins, (_nb_ch - 1) * 2 + 1), dtype=np.float32)
-        spectra_raw = np.zeros((self._max_frames, nb_bins, (_nb_ch - 1) * 2 + 1), dtype=complex)
+        spectra_raw = np.zeros((self._max_frames, nb_bins, _nb_ch), dtype=complex)
         
         for ch_cnt in range(_nb_ch):
             stft_ch = librosa.core.stft(audio_input[:, ch_cnt], n_fft=self._nfft, hop_length=self._hop_len,
@@ -291,8 +291,12 @@ class FeatureClass:
             feat_file = np.load(os.path.join(self._feat_dir, file_name))
 #            feat_file = spec_scaler.transform(np.concatenate((np.abs(feat_file), np.angle(feat_file)), axis=1))
             feat_file.transpose(2,0,1)[0] = spec_scaler.transform(feat_file.transpose(2,0,1)[0])
-            print('{}: {}'.format(file_cnt, file_name))
-            np.save(os.path.join(self._feat_dir_norm, file_name), feat_file)
+
+            print('{}: {} {}'.format(file_cnt, file_name, feat_file.shape))
+
+#            np.save(os.path.join(self._feat_dir_norm, file_name), feat_file)
+            np.save(os.path.join(self._feat_dir_norm, file_name), feat_file.reshape(feat_file.shape[0], -1))
+
             del feat_file
 
         print('normalized files written to {}'.format(self._feat_dir_norm))
