@@ -159,26 +159,25 @@ def main(argv):
         for i in range(len(gt[1])):
             for t in range(128):
                 for l in range(11):
-                    if gt[1][i, t, l] > 0 and gt[1][i, t, l + 11] > 0:
+                    if gt[1][i, t, l] >= 0 and gt[1][i, t, l + 11] >= 0:
                         gt[1][i, t, l] = np.arctan(gt[1][i, t, l] / gt[1][i, t, l+11])
-                    elif gt[1][i, t, l] > 0 and gt[1][i, t, l+11] < 0:
+                    elif gt[1][i, t, l] >= 0 and gt[1][i, t, l+11] < 0:
                         gt[1][i, t, l] = np.arctan(gt[1][i, t, l] / gt[1][i, t, l+11]) + 3.141592
-                    elif gt[1][i, t, l] < 0 and gt[1][i, t, l+11] > 0:
+                    elif gt[1][i, t, l] < 0 and gt[1][i, t, l+11] >= 0:
                         gt[1][i, t, l] = np.arctan(gt[1][i, t, l] / gt[1][i, t, l+11]) - 3.141592
                     elif gt[1][i, t, l] < 0 and gt[1][i, t, l+11] < 0:
                         gt[1][i, t, l] = np.arctan(gt[1][i, t, l] / gt[1][i, t, l+11])
                     
-                    if gt[1][i, t, l+22] > 0 and gt[1][i, t, l + 33] > 0:
+                    if gt[1][i, t, l+22] >= 0 and gt[1][i, t, l + 33] >= 0:
                         gt[1][i, t, l+11] = np.arctan(gt[1][i, t, l+22] / gt[1][i, t, l+33])
-                    elif gt[1][i, t, l+22] > 0 and gt[1][i, t, l+33] < 0:
+                    elif gt[1][i, t, l+22] >= 0 and gt[1][i, t, l+33] < 0:
                         gt[1][i, t, l+11] = np.arctan(gt[1][i, t, l+22] / gt[1][i, t, l+33]) + 3.141592
-                    elif gt[1][i, t, l+22] < 0 and gt[1][i, t, l+33] > 0:
+                    elif gt[1][i, t, l+22] < 0 and gt[1][i, t, l+33] >= 0:
                         gt[1][i, t, l+11] = np.arctan(gt[1][i, t, l+22] / gt[1][i, t, l+33]) - 3.141592
                     elif gt[1][i, t, l+22] < 0 and gt[1][i, t, l+33] < 0:
                         gt[1][i, t, l+11] = np.arctan(gt[1][i, t, l+22] / gt[1][i, t, l+33])
                     
-        gt[1] = gt[1] / 6.28 * 360
-        gt = [gt[0], gt[1][:,:,:22]]
+        gt = [gt[0], gt[1][:,:,:22] / 6.28 * 360]
 
         doa_gt = evaluation_metrics.reshape_3Dto2D(gt[1])
 
@@ -233,26 +232,25 @@ def main(argv):
             for i in range(len(pred[1])):
                 for t in range(128):
                     for l in range(11):
-                        if pred[1][i, t, l] > 0 and pred[1][i, t, l + 11] > 0:
+                        if pred[1][i, t, l] >= 0 and pred[1][i, t, l + 11] >= 0:
                             pred[1][i, t, l] = np.arctan(pred[1][i, t, l] / pred[1][i, t, l+11])
-                        elif pred[1][i, t, l] > 0 and pred[1][i, t, l+11] < 0:
+                        elif pred[1][i, t, l] >= 0 and pred[1][i, t, l+11] < 0:
                             pred[1][i, t, l] = np.arctan(pred[1][i, t, l] / pred[1][i, t, l+11]) + 3.141592
-                        elif pred[1][i, t, l] < 0 and pred[1][i, t, l+11] > 0:
+                        elif pred[1][i, t, l] < 0 and pred[1][i, t, l+11] >= 0:
                             pred[1][i, t, l] = np.arctan(pred[1][i, t, l] / pred[1][i, t, l+11]) - 3.141592
                         elif pred[1][i, t, l] < 0 and pred[1][i, t, l+11] < 0:
                             pred[1][i, t, l] = np.arctan(pred[1][i, t, l] / pred[1][i, t, l+11])
                         
-                        if pred[1][i, t, l+22] > 0 and pred[1][i, t, l + 33] > 0:
+                        if pred[1][i, t, l+22] >= 0 and pred[1][i, t, l + 33] >= 0:
                             pred[1][i, t, l+11] = np.arctan(pred[1][i, t, l+22] / pred[1][i, t, l+33])
-                        elif pred[1][i, t, l+22] > 0 and pred[1][i, t, l+33] < 0:
+                        elif pred[1][i, t, l+22] >= 0 and pred[1][i, t, l+33] < 0:
                             pred[1][i, t, l+11] = np.arctan(pred[1][i, t, l+22] / pred[1][i, t, l+33]) + 3.141592
-                        elif pred[1][i, t, l+22] < 0 and pred[1][i, t, l+33] > 0:
+                        elif pred[1][i, t, l+22] < 0 and pred[1][i, t, l+33] >= 0:
                             pred[1][i, t, l+11] = np.arctan(pred[1][i, t, l+22] / pred[1][i, t, l+33]) - 3.141592
                         elif pred[1][i, t, l+22] < 0 and pred[1][i, t, l+33] < 0:
                             pred[1][i, t, l+11] = np.arctan(pred[1][i, t, l+22] / pred[1][i, t, l+33])
                     
-            pred[1] = pred[1] / 6.28 * 360
-            pred = [pred[0], pred[1][:,:,:22]]
+            pred = [pred[0], pred[1][:,:,:22] / 6.28 * 360]
             
             
             # Calculate the metrics
@@ -321,26 +319,25 @@ def main(argv):
         for i in range(len(pred_test[1])):
             for t in range(128):
                 for l in range(11):
-                    if pred_test[1][i, t, l] > 0 and pred_test[1][i, t, l + 11] > 0:
+                    if pred_test[1][i, t, l] >= 0 and pred_test[1][i, t, l + 11] >= 0:
                         pred_test[1][i, t, l] = np.arctan(pred_test[1][i, t, l] / pred_test[1][i, t, l+11])
-                    elif pred_test[1][i, t, l] > 0 and pred_test[1][i, t, l+11] < 0:
+                    elif pred_test[1][i, t, l] >= 0 and pred_test[1][i, t, l+11] < 0:
                         pred_test[1][i, t, l] = np.arctan(pred_test[1][i, t, l] / pred_test[1][i, t, l+11]) + 3.141592
-                    elif pred_test[1][i, t, l] < 0 and pred_test[1][i, t, l+11] > 0:
+                    elif pred_test[1][i, t, l] < 0 and pred_test[1][i, t, l+11] >= 0:
                         pred_test[1][i, t, l] = np.arctan(pred_test[1][i, t, l] / pred_test[1][i, t, l+11]) - 3.141592
                     elif pred_test[1][i, t, l] < 0 and pred_test[1][i, t, l+11] < 0:
                         pred_test[1][i, t, l] = np.arctan(pred_test[1][i, t, l] / pred_test[1][i, t, l+11])
                     
-                    if pred_test[1][i, t, l+22] > 0 and pred_test[1][i, t, l + 33] > 0:
+                    if pred_test[1][i, t, l+22] >= 0 and pred_test[1][i, t, l + 33] >= 0:
                         pred_test[1][i, t, l+11] = np.arctan(pred_test[1][i, t, l+22] / pred_test[1][i, t, l+33])
-                    elif pred_test[1][i, t, l+22] > 0 and pred_test[1][i, t, l+33] < 0:
+                    elif pred_test[1][i, t, l+22] >= 0 and pred_test[1][i, t, l+33] < 0:
                         pred_test[1][i, t, l+11] = np.arctan(pred_test[1][i, t, l+22] / pred_test[1][i, t, l+33]) + 3.141592
-                    elif pred_test[1][i, t, l+22] < 0 and pred_test[1][i, t, l+33] > 0:
+                    elif pred_test[1][i, t, l+22] < 0 and pred_test[1][i, t, l+33] >= 0:
                         pred_test[1][i, t, l+11] = np.arctan(pred_test[1][i, t, l+22] / pred_test[1][i, t, l+33]) - 3.141592
                     elif pred_test[1][i, t, l+22] < 0 and pred_test[1][i, t, l+33] < 0:
                         pred_test[1][i, t, l+11] = np.arctan(pred_test[1][i, t, l+22] / pred_test[1][i, t, l+33])
                 
-        pred_test[1] = pred_test[1] / 6.28 * 360
-        pred_test = [pred_test[0], pred_test[1][:,:,:22]]
+        pred_test = [pred_test[0], pred_test[1][:,:,:22] / 6.28 * 360]
         
         
         test_sed_pred = evaluation_metrics.reshape_3Dto2D(pred_test[0]) > 0.5

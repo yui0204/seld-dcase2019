@@ -75,7 +75,8 @@ class DataGenerator(object):
         else:
             label_shape = [
                 (self._batch_size, self._seq_len, self._nb_classes),
-                (self._batch_size, self._seq_len, self._nb_classes*2)
+#                (self._batch_size, self._seq_len, self._nb_classes*2)
+                (self._batch_size, self._seq_len, self._nb_classes*2*2)
             ]
         return feat_shape, label_shape
 
