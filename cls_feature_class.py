@@ -315,9 +315,9 @@ class FeatureClass:
             wav_filename = '{}.wav'.format(file_name.split('.')[0])
             desc_file = self.read_desc_file(os.path.join(self._desc_dir, file_name))
             label_mat = self.get_labels_for_file(desc_file)
-            np.save(os.path.join(self._label_dir, '{}.npy'.format(wav_filename.split('.')[0])), label_mat)
+            #np.save(os.path.join(self._label_dir, '{}.npy'.format(wav_filename.split('.')[0])), label_mat)
 
-            """
+            
             label_mat_new = np.zeros((self._max_frames, 55), dtype=np.float32)
             label_mat_new[:, :11] = label_mat[:, :11]
             label_mat_new[:, 11:22] = np.sin(label_mat[:, 11:22] * 6.28 / 360)
@@ -325,9 +325,9 @@ class FeatureClass:
 #            label_mat_new[:, 33:] = label_mat[:, 22:]
             label_mat_new[:, 33:44] = np.sin(label_mat[:, 22:] * 6.28 / 360)
             label_mat_new[:, 44:] = np.cos(label_mat[:, 22:] * 6.28 / 360)
-            
+            print('{}: {} {}'.format(file_cnt, file_name, label_mat_new.shape))
             np.save(os.path.join(self._label_dir, '{}.npy'.format(wav_filename.split('.')[0])), label_mat_new)
-            """
+            
             
 
 

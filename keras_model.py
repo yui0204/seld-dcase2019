@@ -58,7 +58,7 @@ def get_model(data_in, data_out, dropout_rate, nb_cnn2d_filt, pool_size,
             sed = Dropout(dropout_rate)(sed)
         sed = TimeDistributed(Dense(data_out[0][-1]))(sed)
         sed = Activation('sigmoid', name='sed_out')(sed)
-    
+
         model = Model(inputs=spec_start, outputs=[sed, doa])
 
         model.summary()
