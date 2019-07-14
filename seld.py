@@ -279,6 +279,7 @@ def main(argv):
             # Calculate the metrics
             sed_pred = evaluation_metrics.reshape_3Dto2D(pred[0]) > 0.5
             doa_pred = evaluation_metrics.reshape_3Dto2D(pred[1])
+            print(doa_gt, doa_pred)
 
             # rescaling the elevation data from [-180 180] to [-def_elevation def_elevation] for scoring purpose
             doa_pred[:, nb_classes:] = doa_pred[:, nb_classes:] / (180. / def_elevation)
