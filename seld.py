@@ -159,6 +159,7 @@ def main(argv):
         for i in range(len(gt[1])):
             for t in range(128):
                 for l in range(11):
+                    print(gt[1][i, t, l], [1][i, t, l + 11], gt[1][i, t, l+22], gt[1][i, t, l+33])
                     if gt[1][i, t, l] >= 0 and gt[1][i, t, l + 11] >= 0:
                         gt[1][i, t, l] = np.arctan(gt[1][i, t, l] / gt[1][i, t, l+11])
                     elif gt[1][i, t, l] >= 0 and gt[1][i, t, l+11] < 0:
@@ -176,6 +177,7 @@ def main(argv):
                         gt[1][i, t, l+11] = np.arctan(gt[1][i, t, l+22] / gt[1][i, t, l+33]) - 3.141592
                     elif gt[1][i, t, l+22] < 0 and gt[1][i, t, l+33] < 0:
                         gt[1][i, t, l+11] = np.arctan(gt[1][i, t, l+22] / gt[1][i, t, l+33])
+                    print(gt[1][i, t, l] / 6.28 * 360, [1][i, t, l + 11] / 6.28 * 360)
                     
         gt = [gt[0], gt[1][:,:,:22] / 6.28 * 360]
 
@@ -374,6 +376,28 @@ def main(argv):
             test_data_in, test_data_out = data_gen_test.get_data_sizes()
             test_gt = collect_test_labels(data_gen_test, test_data_out, params['quick_test'])
             test_sed_gt = evaluation_metrics.reshape_3Dto2D(test_gt[0])
+            
+            for i in range(len(test_gt[1])):
+                for t in range(128):
+                    for l in range(11):
+                        if test_gt[1][i, t, l] >= 0 and test_gt[1][i, t, l + 11] >= 0:
+                            test_gt[1][i, t, l] = np.arctan(test_gt[1][i, t, l] / test_gt[1][i, t, l+11])
+                        elif test_gt[1][i, t, l] >= 0 and test_gt[1][i, t, l+11] < 0:
+                            test_gt[1][i, t, l] = np.arctan(test_gt[1][i, t, l] / test_gt[1][i, t, l+11]) + 3.141592
+                        elif test_gt[1][i, t, l] < 0 and test_gt[1][i, t, l+11] >= 0:
+                            test_gt[1][i, t, l] = np.arctan(test_gt[1][i, t, l] / test_gt[1][i, t, l+11]) - 3.141592
+                        elif test_gt[1][i, t, l] < 0 and test_gt[1][i, t, l+11] < 0:
+                            test_gt[1][i, t, l] = np.arctan(test_gt[1][i, t, l] / test_gt[1][i, t, l+11])
+                        
+                        if test_gt[1][i, t, l+22] >= 0 and test_gt[1][i, t, l + 33] >= 0:
+                            test_gt[1][i, t, l+11] = np.arctan(test_gt[1][i, t, l+22] / test_gt[1][i, t, l+33])
+                        elif test_gt[1][i, t, l+22] >= 0 and test_gt[1][i, t, l+33] < 0:
+                            test_gt[1][i, t, l+11] = np.arctan(test_gt[1][i, t, l+22] / test_gt[1][i, t, l+33]) + 3.141592
+                        elif test_gt[1][i, t, l+22] < 0 and test_gt[1][i, t, l+33] >= 0:
+                            test_gt[1][i, t, l+11] = np.arctan(test_gt[1][i, t, l+22] / test_gt[1][i, t, l+33]) - 3.141592
+                        elif test_gt[1][i, t, l+22] < 0 and test_gt[1][i, t, l+33] < 0:
+                            test_gt[1][i, t, l+11] = np.arctan(test_gt[1][i, t, l+22] / test_gt[1][i, t, l+33])
+            
             test_doa_gt = evaluation_metrics.reshape_3Dto2D(test_gt[1])
             # rescaling the reference elevation from [-180 180] to [-def_elevation def_elevation] for scoring purpose
             test_doa_gt[:, nb_classes:] = test_doa_gt[:, nb_classes:] / (180. / def_elevation)
