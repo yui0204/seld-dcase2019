@@ -336,7 +336,8 @@ class FeatureClass:
                     
                     
                     if label_mat_new[t, l+11] == 0 and label_mat_new[t, l+22] == 0:
-                        print("azimuth", label_mat[t, l+11], round(np.arctan(label_mat_new[t, l+11] / label_mat_new[t, l+22]) / 6.283184 * 360))    
+                        a = 0
+                        #print("azimuth", label_mat[t, l+11], round(np.arctan(label_mat_new[t, l+11] / label_mat_new[t, l+22]) / 6.283184 * 360))    
                     elif label_mat_new[t, l+11] >= 0 and label_mat_new[t, l+22] >= 0:
                         print("azimuth", label_mat[t, l+11], round(np.arctan(label_mat_new[t, l+11] / label_mat_new[t, l+22]) / 6.283184 * 360))
                     elif label_mat_new[t, l+11] >= 0 and label_mat_new[t, l+22] < 0:
@@ -348,7 +349,8 @@ class FeatureClass:
                     
                     
                     if label_mat_new[t, l+33] == 0 and label_mat_new[t, l+44] == 0:
-                        print("elevation", label_mat[t, l+22], round(np.arctan(label_mat_new[t, l+33] / label_mat_new[t, l+44]) / 6.283184 * 360))
+                        a=0
+                        #print("elevation", label_mat[t, l+22], round(np.arctan(label_mat_new[t, l+33] / label_mat_new[t, l+44]) / 6.283184 * 360))
                     elif label_mat_new[t, l+33] >= 0 and label_mat_new[t, l+44] >= 0:
                         print("elevation", label_mat[t, l+22], round(np.arctan(label_mat_new[t, l+33] / label_mat_new[t, l+44]) / 6.283184 * 360))
                     elif label_mat_new[t, l+33] >= 0 and label_mat_new[t, l+44] < 0:

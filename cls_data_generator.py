@@ -192,12 +192,12 @@ class DataGenerator(object):
                     label = self._split_in_seqs(label)
 
                     # Get azi/ele in radians
-                    azi_rad = label[:, :, self._nb_classes:2 * self._nb_classes] * np.pi / 180
+                    azi_rad = label[:, :, self._nb_classes:2 * self._nb_classes] #####* np.pi / 180 #################################################33
                     # ele_rad = label[:, :, 2 * self._nb_classes:] * np.pi / 180
 
                     # rescaling the elevation data from [-def_elevation def_elevation] to [-180 180] to keep them in the
                     # range of azimuth angle
-                    ele_rad = label[:, :, 2 * self._nb_classes:] * np.pi / self._default_ele
+                    ele_rad = label[:, :, 2 * self._nb_classes:] ####* np.pi / self._default_ele ############################################3##########
 
                     label = [
                         label[:, :, :self._nb_classes],  # SED labels
