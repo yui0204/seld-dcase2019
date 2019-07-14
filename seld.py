@@ -282,7 +282,7 @@ def main(argv):
             #print(doa_gt, doa_pred)
 
             # rescaling the elevation data from [-180 180] to [-def_elevation def_elevation] for scoring purpose
-            doa_pred[:, nb_classes:] = doa_pred[:, nb_classes:] / (180. / def_elevation)
+            doa_pred[:, nb_classes:] = doa_pred[:, nb_classes:] #############/ (180. / def_elevation)
 
             sed_metric[epoch_cnt, :] = evaluation_metrics.compute_sed_scores(sed_pred, sed_gt, data_gen_val.nb_frames_1s())
             doa_metric[epoch_cnt, :] = evaluation_metrics.compute_doa_scores_regr(doa_pred, doa_gt, sed_pred, sed_gt)
@@ -378,7 +378,7 @@ def main(argv):
         test_doa_pred = evaluation_metrics.reshape_3Dto2D(pred_test[1])
 
         # rescaling the elevation data from [-180 180] to [-def_elevation def_elevation] for scoring purpose
-        test_doa_pred[:, nb_classes:] = test_doa_pred[:, nb_classes:] / (180. / def_elevation)
+        test_doa_pred[:, nb_classes:] = test_doa_pred[:, nb_classes:] #########################/ (180. / def_elevation)
 
         if params['dcase_output']:
             # Dump results in DCASE output format for calculating final scores
@@ -445,7 +445,7 @@ def main(argv):
             
             test_doa_gt = evaluation_metrics.reshape_3Dto2D(test_gt[1])
             # rescaling the reference elevation from [-180 180] to [-def_elevation def_elevation] for scoring purpose
-            test_doa_gt[:, nb_classes:] = test_doa_gt[:, nb_classes:] / (180. / def_elevation)
+            test_doa_gt[:, nb_classes:] = test_doa_gt[:, nb_classes:] ########################/ (180. / def_elevation)
 
             test_sed_loss = evaluation_metrics.compute_sed_scores(test_sed_pred, test_sed_gt, data_gen_test.nb_frames_1s())
             test_doa_loss = evaluation_metrics.compute_doa_scores_regr(test_doa_pred, test_doa_gt, test_sed_pred, test_sed_gt)
