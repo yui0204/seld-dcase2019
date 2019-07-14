@@ -159,7 +159,7 @@ def main(argv):
         for i in range(len(gt[1])):
             for t in range(128):
                 for l in range(11):
-                    print(gt[1][i, t, l], gt[1][i, t, l+11], gt[1][i, t, l+22], gt[1][i, t, l+33])
+                    #print(gt[1][i, t, l], gt[1][i, t, l+11], gt[1][i, t, l+22], gt[1][i, t, l+33])
                     
                     if gt[1][i, t, l] == 0 and gt[1][i, t, l + 11] == 0:
                         gt[1][i, t, l] = 180
@@ -188,7 +188,7 @@ def main(argv):
                         gt[1][i, t, l+11] = np.arctan(gt[1][i, t, l+22] / gt[1][i, t, l+33]) / 6.283184 * 360
                     else:
                         print("else")
-                    print(gt[1][i, t, l], gt[1][i, t, l+11], gt[1][i, t, l+22], gt[1][i, t, l+33])
+                    #print(gt[1][i, t, l], gt[1][i, t, l+11], gt[1][i, t, l+22], gt[1][i, t, l+33])
                     
         gt = [gt[0], gt[1][:,:,:22]]
 
@@ -197,7 +197,7 @@ def main(argv):
         # rescaling the reference elevation data from [-180 180] to [-def_elevation def_elevation] for scoring purpose
         nb_classes = data_gen_train.get_nb_classes()
         def_elevation = data_gen_train.get_default_elevation()
-        doa_gt[:, nb_classes:] = doa_gt[:, nb_classes:] / (180. / def_elevation)
+        doa_gt[:, nb_classes:] = doa_gt[:, nb_classes:] ################################### / (180. / def_elevation)
 
         print('MODEL:\n\tdropout_rate: {}\n\tCNN: nb_cnn_filt: {}, pool_size{}\n\trnn_size: {}, fnn_size: {}\n'.format(
             params['dropout_rate'], params['nb_cnn2d_filt'], params['pool_size'], params['rnn_size'],
@@ -279,7 +279,7 @@ def main(argv):
             # Calculate the metrics
             sed_pred = evaluation_metrics.reshape_3Dto2D(pred[0]) > 0.5
             doa_pred = evaluation_metrics.reshape_3Dto2D(pred[1])
-            print(doa_gt, doa_pred)
+            #print(doa_gt, doa_pred)
 
             # rescaling the elevation data from [-180 180] to [-def_elevation def_elevation] for scoring purpose
             doa_pred[:, nb_classes:] = doa_pred[:, nb_classes:] / (180. / def_elevation)
