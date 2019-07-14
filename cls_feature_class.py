@@ -320,11 +320,49 @@ class FeatureClass:
             
             label_mat_new = np.zeros((self._max_frames, 55), dtype=np.float32)
             label_mat_new[:, :11] = label_mat[:, :11]
-            label_mat_new[:, 11:22] = np.sin(label_mat[:, 11:22] * 6.28 / 360)
-            label_mat_new[:, 22:33] = np.cos(label_mat[:, 11:22] * 6.28 / 360)
-#            label_mat_new[:, 33:] = label_mat[:, 22:]
-            label_mat_new[:, 33:44] = np.sin(label_mat[:, 22:] * 6.28 / 360)
-            label_mat_new[:, 44:] = np.cos(label_mat[:, 22:] * 6.28 / 360)
+            for t in range(3000):
+                for l in range(11):
+                    if label_mat[t, l+11] == 180:
+                        label_mat_new[t, l+11] = 0
+                        label_mat_new[t, l+22] = 0
+                        label_mat_new[t, l+33] = 0
+                        label_mat_new[t, l+44] = 0
+                    else:
+                        label_mat_new[t, l+11] = np.sin(label_mat[t, l+11] * 6.283184 / 360)
+                        label_mat_new[t, l+22] = np.cos(label_mat[t, l+11] * 6.283184 / 360)
+                        label_mat_new[t, l+33] = np.sin(label_mat[t, l+22] * 6.283184 / 360)
+                        label_mat_new[t, l+44] = np.cos(label_mat[t, l+22] * 6.283184 / 360)
+                    
+                    
+                    """
+                    if label_mat_new[t, l+11] == 0 and label_mat_new[t, l+22] == 0:
+                        a = 1                        
+                    elif label_mat_new[t, l+11] >= 0 and label_mat_new[t, l+22] >= 0:
+                        print("azimuth", label_mat[t, l+11], round(np.arctan(label_mat_new[t, l+11] / label_mat_new[t, l+22]) / 6.283184 * 360))
+                    elif label_mat_new[t, l+11] >= 0 and label_mat_new[t, l+22] < 0:
+                        print("azimuth", label_mat[t, l+11], round(np.arctan(label_mat_new[t, l+11] / label_mat_new[t, l+22]) / 6.283184 * 360 + 180))
+                    elif label_mat_new[t, l+11] < 0 and label_mat_new[t, l+22] < 0:
+                        print("azimuth", label_mat[t, l+11], round(np.arctan(label_mat_new[t, l+11] / label_mat_new[t, l+22]) / 6.283184 * 360 - 180))
+                    elif label_mat_new[t, l+11] < 0 and label_mat_new[t, l+22] >= 0:
+                        print("azimuth", label_mat[t, l+11], round(np.arctan(label_mat_new[t, l+11] / label_mat_new[t, l+22]) / 6.283184 * 360))
+                    
+                    
+                    if label_mat_new[t, l+33] == 0 and label_mat_new[t, l+44] == 0:
+                        a = 1                        
+                    elif label_mat_new[t, l+33] >= 0 and label_mat_new[t, l+44] >= 0:
+                        print("elevation", label_mat[t, l+22], round(np.arctan(label_mat_new[t, l+33] / label_mat_new[t, l+44]) / 6.283184 * 360))
+                    elif label_mat_new[t, l+33] >= 0 and label_mat_new[t, l+44] < 0:
+                        print("elevation", label_mat[t, l+22], round(np.arctan(label_mat_new[t, l+33] / label_mat_new[t, l+44]) / 6.283184 * 360 + 180))
+                    elif label_mat_new[t, l+33] < 0 and label_mat_new[t, l+44] < 0:
+                        print("elevation", label_mat[t, l+22], round(np.arctan(label_mat_new[t, l+33] / label_mat_new[t, l+44]) / 6.283184 * 360 - 180))
+                    elif label_mat_new[t, l+33] < 0 and label_mat_new[t, l+44] >= 0:
+                        print("elevation", label_mat[t, l+22], round(np.arctan(label_mat_new[t, l+33] / label_mat_new[t, l+44]) / 6.283184 * 360))
+                    """
+                    
+#            label_mat_new[:, 11:22] = np.sin(label_mat[:, 11:22] * 6.283184 / 360)
+#            label_mat_new[:, 22:33] = np.cos(label_mat[:, 11:22] * 6.283184 / 360)
+#            label_mat_new[:, 33:44] = np.sin(label_mat[:, 22:] * 6.283184 / 360)
+#            label_mat_new[:, 44:] = np.cos(label_mat[:, 22:] * 6.283184 / 360)
             print('{}: {} {}'.format(file_cnt, file_name, label_mat_new.shape))
             np.save(os.path.join(self._label_dir, '{}.npy'.format(wav_filename.split('.')[0])), label_mat_new)
             
