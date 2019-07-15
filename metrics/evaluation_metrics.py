@@ -133,10 +133,10 @@ class SELDMetrics(object):
             # similarly, when nb_estimated_doa > nb_ref_doa, ignores the extra estimated doa and scores the remaining matching doas
             if nb_gt_peaks and nb_pred_peaks:
                 pred_ind = np.where(pred_doa_thresholded[frame] == 1)[1]
-                pred_list_rad = np.array(self._data_gen .get_matrix_index(pred_ind)) #############* np.pi / 180
+                pred_list_rad = np.array(self._data_gen .get_matrix_index(pred_ind)) * np.pi / 180
 
                 gt_ind = np.where(gt_doa[frame] == 1)[1]
-                gt_list_rad = np.array(self._data_gen .get_matrix_index(gt_ind)) #################* np.pi / 180
+                gt_list_rad = np.array(self._data_gen .get_matrix_index(gt_ind)) * np.pi / 180
 
                 frame_dist = distance_between_gt_pred(gt_list_rad.T, pred_list_rad.T)
                 self._doa_loss_pred += frame_dist
@@ -348,10 +348,10 @@ def compute_doa_scores_clas(pred_doa_thresholded, gt_doa, data_gen_test):
         # similarly, when nb_estimated_doa > nb_ref_doa, ignores the extra estimated doa and scores the remaining matching doas
         if nb_gt_peaks and nb_pred_peaks:
             pred_ind = np.where(pred_doa_thresholded[frame] == 1)[1]
-            pred_list_rad = np.array(data_gen_test.get_matrix_index(pred_ind)) #############################* np.pi / 180
+            pred_list_rad = np.array(data_gen_test.get_matrix_index(pred_ind)) * np.pi / 180
 
             gt_ind = np.where(gt_doa[frame] == 1)[1]
-            gt_list_rad = np.array(data_gen_test.get_matrix_index(gt_ind)) #################################* np.pi / 180
+            gt_list_rad = np.array(data_gen_test.get_matrix_index(gt_ind)) * np.pi / 180
 
             frame_dist = distance_between_gt_pred(gt_list_rad.T, pred_list_rad.T)
             doa_loss_pred += frame_dist
@@ -411,7 +411,7 @@ def distance_between_spherical_coordinates_rad(az1, ele1, az2, ele2):
     dist = np.sin(ele1) * np.sin(ele2) + np.cos(ele1) * np.cos(ele2) * np.cos(np.abs(az1 - az2))
     # Making sure the dist values are in -1 to 1 range, else np.arccos kills the job
     dist = np.clip(dist, -1, 1)
-    dist = np.arccos(dist) ##############################################################################3* 180 / np.pi
+    dist = np.arccos(dist) * 180 / np.pi
     return dist
 
 
@@ -424,7 +424,7 @@ def distance_between_cartesian_coordinates(x1, y1, z1, x2, y2, z2):
     :return: angular distance in degrees
     """
     dist = np.sqrt((x1-x2) ** 2 + (y1-y2) ** 2 + (z1-z2) ** 2)
-    dist = 2 * np.arcsin(dist / 2.0) #######################################################################* 180/np.pi
+    dist = 2 * np.arcsin(dist / 2.0) * 180/np.pi
     return dist
 
 
